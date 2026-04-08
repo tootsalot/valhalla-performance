@@ -1,0 +1,9 @@
+{
+    "name": "ValhallaPerformance",
+    "version_number": "1.3.0",
+    "website_url": "https://github.com/tootsalot/valhalla-performance",
+    "description": "All-in-one performance optimizer. Replaces VPO, Smoke_Collision, and VBNetTweaks. 12 systems including streaming and VFX, dedicated-server-safe runtime gating, adaptive network tuning, and Zstd package compression support.",
+    "dependencies": [
+        "denikson-BepInExPack_Valheim-5.4.2333"
+    ]
+}
