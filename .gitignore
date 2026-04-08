@@ -1,0 +1,6 @@
+bin/
+obj/
+.vs/
+.git_blocked/
+.git_blocked2/
+gitdata/

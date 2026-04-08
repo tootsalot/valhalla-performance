@@ -1,0 +1,68 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <AssemblyName>ValhallaPerformance</AssemblyName>
+    <RootNamespace>ValhallaPerformance</RootNamespace>
+    <LangVersion>9.0</LangVersion>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <Version>1.3.0</Version>
+    <AutoDeployOnBuild>true</AutoDeployOnBuild>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+
+    <!--
+      ╔═══════════════════════════════════════════════════╗
+      ║  SETUP: Uncomment the line below and set your     ║
+      ║  Valheim install path. Then build (Ctrl+Shift+B). ║
+      ╚═══════════════════════════════════════════════════╝
+    -->
+    <ValheimDir>C:\Path\To\Valheim</ValheimDir>
+    <BepInExDir>C:\Path\To\BepInEx</BepInExDir>
+    <ManagedDir>$(ValheimDir)\valheim_Data\Managed</ManagedDir>
+  </PropertyGroup>
+
+  <!-- BepInEx -->
+  <ItemGroup>
+    <Reference Include="BepInEx" HintPath="$(BepInExDir)\core\BepInEx.dll" Private="false" />
+    <Reference Include="0Harmony" HintPath="$(BepInExDir)\core\0Harmony.dll" Private="false" />
+  </ItemGroup>
+
+  <!-- Unity -->
+  <ItemGroup>
+    <Reference Include="UnityEngine" HintPath="$(ManagedDir)\UnityEngine.dll" Private="false" />
+    <Reference Include="UnityEngine.CoreModule" HintPath="$(ManagedDir)\UnityEngine.CoreModule.dll" Private="false" />
+    <Reference Include="UnityEngine.AudioModule" HintPath="$(ManagedDir)\UnityEngine.AudioModule.dll" Private="false" />
+    <Reference Include="UnityEngine.PhysicsModule" HintPath="$(ManagedDir)\UnityEngine.PhysicsModule.dll" Private="false" />
+    <Reference Include="UnityEngine.ParticleSystemModule" HintPath="$(ManagedDir)\UnityEngine.ParticleSystemModule.dll" Private="false" />
+    <Reference Include="UnityEngine.TerrainModule" HintPath="$(ManagedDir)\UnityEngine.TerrainModule.dll" Private="false" />
+    
+    <Reference Include="UnityEngine.AnimationModule" HintPath="$(ManagedDir)\UnityEngine.AnimationModule.dll" Private="false" />
+  </ItemGroup>
+
+  <!-- Valheim -->
+  <ItemGroup>
+    <Reference Include="assembly_valheim" HintPath="$(ManagedDir)\assembly_valheim.dll" Private="false" />
+    <Reference Include="assembly_utils" HintPath="$(ManagedDir)\assembly_utils.dll" Private="false" />
+  </ItemGroup>
+
+  <!-- NuGet -->
+  <ItemGroup>
+    <PackageReference Include="ZstdSharp.Port" Version="0.8.1" />
+  </ItemGroup>
+
+  <!-- Auto-deploy on build -->
+  <Target Name="Deploy" AfterTargets="Build" Condition="'$(AutoDeployOnBuild)' == 'true' and Exists('$(BepInExDir)\plugins')">
+    <MakeDir Directories="$(BepInExDir)\plugins\ValhallaPerformance" />
+    <ItemGroup>
+      <DeployFiles Include="$(OutputPath)*.dll" />
+      <DeployFiles Include="$(OutputPath)*.pdb" />
+    </ItemGroup>
+    <Copy SourceFiles="@(DeployFiles)"
+          DestinationFolder="$(BepInExDir)\plugins\ValhallaPerformance\"
+          SkipUnchangedFiles="true" />
+    <Message Text="→ Deployed to $(BepInExDir)\plugins\ValhallaPerformance\" Importance="High" />
+  </Target>
+
+</Project>
+
